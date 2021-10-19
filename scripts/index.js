@@ -47,6 +47,7 @@ var newTask = document.querySelector('.input_text')
 var addTaskbtn = document.querySelector('.add_task')
 var newTaskIn = document.querySelector('.input_text_in_scroll')
 var addTaskbtnIn = document.querySelector('.add_task_in_scroll')
+var removebtn = document.querySelector('.todo_list')
 const $gauge = document.querySelector('.gauge')
 const btnNewDay = document.querySelector('.new_day_button')
 let countToDo = document.querySelector('.count_task') // переменная для отображ-я кол-ва тасков под кольцом
@@ -59,7 +60,7 @@ let stateSuccess = localStorage.getItem('state_success') ? JSON.parse(localStora
 
 function gaugePhotoDisplay(a, b, c, d, e) {
     document.querySelectorAll('.gauge')[0].style.display = a
-    document.querySelectorAll('.new_day_screen')[0].style.display = 'none'
+    document.querySelectorAll('.new_day_screen')[0].style.display = b
     document.querySelectorAll('.all_down_screen')[0].style.display = c
     document.querySelectorAll('.count_task')[0].style.display = d
     document.querySelectorAll('.what_is')[0].style.display = e
@@ -79,11 +80,32 @@ function path(flag, taskValue, key) {
     checkboxTask.onclick = checkTask
     checkboxTask.id = key
     checkboxTask.checked = flag
+    btn = document.createElement("button")
+    btn.className = "delete"
     elementOfList.innerText = taskValue
     elementOfList.prepend(checkboxTask)
     elementTodoList.appendChild(elementOfList)
+    elementTodoList.append(btn)
     return elementTodoList
+
 }
+
+
+removebtn.addEventListener("click", (e) => {
+
+    if (e.target.className === 'delete') {
+        e.target.parentElement.parentElement.removeChild(e.target.parentElement)
+        countOfTask--
+        localStorage.setItem('count', JSON.stringify(countOfTask))
+        countToDo.textContent = countOfTask + " tasks to do"
+        for (key in stateSuccess) {
+            if (key == obj.id) {
+                delete stateSuccess[key]
+            }
+        }
+        checkGauge()
+    }
+})
 
 newTask.addEventListener("keyup", (e) => {
     if (e.keyCode === 13 && inputValid(newTask)) {
@@ -145,7 +167,7 @@ function addTask(taskValue) {
     $('.todo_list').append(path(false, taskValue, id))
     localStorage.setItem('id_task', JSON.stringify(id))
     id++
-    console.log(id)
+
     countToDo.textContent = countOfTask + " tasks to do"
 
     checkGauge()

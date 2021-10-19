@@ -228,6 +228,21 @@ body {
 .delete {
     width: 12px;
     height: 12px;
+    background-image: url(/images/Icon.svg);
+    margin-right: 14px;
+    border: 0;
+    color: #A5A5A5;
+    cursor: pointer;
+    outline: none;
+    transition: color 150ms ease-in-out;
+}
+
+.element_of_list:focus-within .delete {
+    color: #252526;
+}
+
+.delete input:focus {
+    color: #252526;
 }
 
 .element-todo-list i {
