@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-	<title></title>
-	<link rel="stylesheet" type="text/css" href="styles/fonts.css">    
-	<link rel="stylesheet" type="text/css" href="styles/gauge.css">    
-	<link rel="stylesheet" type="text/css" href="styles/index.css">    
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="styles/fonts.css">
+    <link rel="stylesheet" type="text/css" href="styles/gauge.css">
+    <link rel="stylesheet" type="text/css" href="styles/index.css">
 </head>
+
 <body>
-  <div class="container">
-    <div class="gauge">
-        <div class="gauge__average">
-          <svg viewBox="0 0 120 120" class="gauge__cirlce" fill="none" stroke-width="2">
+    <div class="header_todo">
+        Today
+    </div>
+    <div class="container">
+        <div class="gauge">
+            <div class="gauge__average">
+                <svg viewBox="0 0 120 120" class="gauge__cirlce" fill="none" stroke-width="2">
             <circle class="gauge__cirlce-base" r="53" cx="60" cy="60"></circle>
             <circle
               class="gauge__cirlce-arc" 
@@ -20,13 +25,60 @@
               stroke-dashoffset="0"
               stroke-dasharray="1 329"></circle>
           </svg>
-          <div class="gauge__percent">40</div>
+                <div class="gauge__percent">0</div>
+            </div>
+        </div>
+
+        <div class="count_task">0 tasks to do</div>
+        <div class="input_container">
+            <div class="new_day_screen">
+                <img src="/images/What.jpg" class="image_day">
+                <div class="text1">What’s up!</div>
+                <div class="text2">What do you want to do today?</div>
+            </div>
+            <div class="all_down_screen">
+                <img src="/images/All.JPG" class="all_down_img_day">
+                <div class="text3">All done!</div>
+                <div class="text4">Have a party or go for a walk!</div>
+            </div>
+            <div class="input_list">
+                <div class="todo_list"></div>
+                <div class="what_is_in_container">
+                    <button class="add_task_in_scroll">+</button>
+                    <input class="input_text_in_scroll" placeholder="What's next?">
+                </div>
+            </div>
+            <div class="what_is">
+                <button class="add_task">+</button>
+                <input class="input_text" placeholder="What's next?">
+            </div>
         </div>
     </div>
-    <div class="button incr">+</div>
-    <div class="button decr">-</div>
-  </div>
-  <script type="text/javascript" src="scripts/helpers.js"></script>
-  <script type="text/javascript" src="scripts/index.js"></script>
+
+
+    <div class="new_day_button" type="button">
+        <i class="fas fa-calendar-day"></i>
+        <div class="day_elem">
+            New day
+        </div>
+    </div>
+    <script type="text/javascript" src="scripts/helpers.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
 </body>
+
 </html>
+
+<!--<div class="element-todo-list">
+  <div class="success element_of_list">
+    <input type="checkbox" onclick="checkTask(this)" checked class="checkbox_task" id = "' + key + '">' + returnObj[key] + '
+  </div><i onclick="removeTask(this)" class="delete" style="display:none"></i>
+</div>
+
+<div class="element-todo-list">
+  <div class="element_of_list">
+    <input type="checkbox" onclick="checkTask(this)" class="checkbox_task" id = "' + key + '">' + returnObj[key] + '
+  </div><button onclick="removeTask(this)" class="delete"></button>
+</div>-->
