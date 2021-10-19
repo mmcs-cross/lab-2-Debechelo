@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     newTask.value = ""
     newTaskIn.value = ""
+    checkGauge();
 
 })
 
@@ -151,8 +152,18 @@ addTaskbtnIn.addEventListener("click", (e) => {
 
 
 btnNewDay.addEventListener("click", (e) => {
-    localStorage.clear()
+    for (key in stateSuccess) {
+        if (stateSuccess[key] == 'true') {
+            delete stateSuccess[key]
+            delete listItems[key]
+            countOfTask--
+        }
+    }
+    localStorage.setItem('count', JSON.stringify(countOfTask))
+    localStorage.setItem("state_success", JSON.stringify(stateSuccess))
+    localStorage.setItem('list_items', JSON.stringify(listItems))
     window.location.reload()
+        //localStorage.clear()
 })
 
 
@@ -188,6 +199,11 @@ function checkGauge() {
     state.counter = Math.round(Object.keys(stateSuccess).length * 100 / countOfTask)
     saveState(state)
     setGaugePercent($gauge, state.counter)
+    if (state.counter == 100) {
+        gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
+    }
+    if (countOfTask == 0)
+        gaugePhotoDisplay('none', 'block', 'none', 'none', 'block')
 }
 
 
