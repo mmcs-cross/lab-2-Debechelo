@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const state = getStoredStateOrDefault({
         counter: 0
     })
-    const count = JSON.parse(localStorage.getItem('count'))
+
     const returnObj = JSON.parse(localStorage.getItem('list_items'))
     const returnState = localStorage.getItem('state_success') ? JSON.parse(localStorage.getItem('state_success')) : {}
 
@@ -74,18 +74,21 @@ function path(flag, taskValue, key) {
     if (flag)
         elementOfList.className = "success element_of_list"
     else elementOfList.className = "element_of_list"
+    elementOfList.id = key
     var checkboxTask = document.createElement("input")
     checkboxTask.className = "checkbox_task"
     checkboxTask.type = "checkbox"
     checkboxTask.onclick = checkTask
-    checkboxTask.id = key
     checkboxTask.checked = flag
-    btn = document.createElement("button")
+    var text = document.createElement("div")
+    text.className = "textInToDo"
+    text.innerText = taskValue
+    var btn = document.createElement("button")
     btn.className = "delete"
-    elementOfList.innerText = taskValue
+    elementOfList.append(text)
     elementOfList.prepend(checkboxTask)
-    elementTodoList.appendChild(elementOfList)
-    elementTodoList.append(btn)
+    elementOfList.append(btn)
+    elementTodoList.append(elementOfList)
     return elementTodoList
 
 }
@@ -94,16 +97,26 @@ function path(flag, taskValue, key) {
 removebtn.addEventListener("click", (e) => {
 
     if (e.target.className === 'delete') {
-        e.target.parentElement.parentElement.removeChild(e.target.parentElement)
+        e.target.parentElement.parentElement.parentElement.removeChild(e.target.parentElement.parentElement)
         countOfTask--
         localStorage.setItem('count', JSON.stringify(countOfTask))
         countToDo.textContent = countOfTask + " tasks to do"
-        for (key in stateSuccess) {
-            if (key == obj.id) {
+        for (key in listItems) {
+            if (key == e.target.parentElement.id) {
+                console.log(e.target.parentElement)
                 delete stateSuccess[key]
+                delete listItems[key]
+                console.log(listItems)
             }
         }
+        localStorage.setItem("state_success", JSON.stringify(stateSuccess))
+        localStorage.setItem('list_items', JSON.stringify(listItems))
         checkGauge()
+        if (state.counter == 100) {
+            gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
+            newTask.value = ""
+            newTaskIn.value = ""
+        }
     }
 })
 
@@ -115,7 +128,6 @@ newTask.addEventListener("keyup", (e) => {
 })
 
 addTaskbtn.addEventListener("click", (e) => {
-    console.log(newTask)
     if (inputValid(newTask)) {
         saveTask(newTask)
         gaugePhotoDisplay('block', 'none', 'none', 'block', 'none')
@@ -132,7 +144,6 @@ newTaskIn.addEventListener("keyup", (e) => {
 
 addTaskbtnIn.addEventListener("click", (e) => {
     if (inputValid(newTaskIn)) {
-
         saveTask(newTaskIn)
         gaugePhotoDisplay('block', 'none', 'none', 'block', 'none')
     }
@@ -164,12 +175,11 @@ function saveTask(task) {
 function addTask(taskValue) {
     countOfTask++
     localStorage.setItem('count', JSON.stringify(countOfTask))
+    id++
     $('.todo_list').append(path(false, taskValue, id))
     localStorage.setItem('id_task', JSON.stringify(id))
-    id++
 
     countToDo.textContent = countOfTask + " tasks to do"
-
     checkGauge()
 }
 
@@ -186,28 +196,24 @@ function checkTask() {
     obj = this
     if (!obj.parentElement.classList.contains('success')) {
         obj.parentElement.classList.add('success')
-        stateSuccess[obj.parentElement.children[0].id] = "true"
-        localStorage.setItem("state_success", JSON.stringify(stateSuccess))
-        checkGauge()
-        gaugePhotoDisplay('block', 'none', 'none', 'block', 'none')
-            // obj.parentElement.parentElement.children[1].style.display = 'none'
-        if (state.counter == 100) {
-            localStorage.clear()
-            gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
-            newTask.value = ""
-            newTaskIn.value = ""
-        }
+        stateSuccess[obj.parentElement.id] = "true"
 
+        // obj.parentElement.parentElement.children[1].style.display = 'none'
     } else {
         for (key in stateSuccess) {
-            if (key == obj.id) {
+            if (key == obj.parentElement.id) {
                 delete stateSuccess[key]
             }
         }
-        localStorage.setItem("state_success", JSON.stringify(stateSuccess))
         obj.parentElement.classList.remove('success')
             //obj.parentElement.parentElement.children[1].style.display = 'block'
-        gaugePhotoDisplay('block', 'none', 'none', 'block', 'none')
-        checkGauge()
+    }
+    localStorage.setItem("state_success", JSON.stringify(stateSuccess))
+    gaugePhotoDisplay('block', 'none', 'none', 'block', 'none')
+    checkGauge()
+    if (state.counter == 100) {
+        gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
+        newTask.value = ""
+        newTaskIn.value = ""
     }
 }

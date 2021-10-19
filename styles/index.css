@@ -225,9 +225,14 @@ body {
     margin: 8px;
 }
 
+.textInToDo {
+    width: 340px;
+}
+
 .delete {
     width: 12px;
     height: 12px;
+    justify-content: flex-end;
     background-image: url(/images/Icon.svg);
     margin-right: 14px;
     border: 0;
