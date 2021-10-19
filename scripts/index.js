@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
     }
     document.getElementsByClassName('count_task')[0].style.display = 'block'
-    countToDo.textContent = countOfTask + " tasks to do"
+    countToDo.textContent = Object.keys(returnObj).length + " tasks to do"
 
     newTask.value = ""
     newTaskIn.value = ""
@@ -54,7 +54,6 @@ const btnNewDay = document.querySelector('.new_day_button')
 let countToDo = document.querySelector('.count_task') // переменная для отображ-я кол-ва тасков под кольцом
 
 let listItems = localStorage.getItem('list_items') ? JSON.parse(localStorage.getItem('list_items')) : {} // таски в базе
-let countOfTask = localStorage.getItem('count') ? JSON.parse(localStorage.getItem('count')) : 0 //переменная для подсчёта тасков в базе
 let id = localStorage.getItem('id_task') ? JSON.parse(localStorage.getItem('id_task')) : 0
 let stateSuccess = localStorage.getItem('state_success') ? JSON.parse(localStorage.getItem('state_success')) : {}
 
@@ -94,33 +93,6 @@ function path(flag, taskValue, key) {
 
 }
 
-
-removebtn.addEventListener("click", (e) => {
-
-    if (e.target.className === 'delete') {
-        e.target.parentElement.parentElement.parentElement.removeChild(e.target.parentElement.parentElement)
-        countOfTask--
-        localStorage.setItem('count', JSON.stringify(countOfTask))
-        countToDo.textContent = countOfTask + " tasks to do"
-        for (key in listItems) {
-            if (key == e.target.parentElement.id) {
-                console.log(e.target.parentElement)
-                delete stateSuccess[key]
-                delete listItems[key]
-                console.log(listItems)
-            }
-        }
-        localStorage.setItem("state_success", JSON.stringify(stateSuccess))
-        localStorage.setItem('list_items', JSON.stringify(listItems))
-        checkGauge()
-        if (state.counter == 100) {
-            gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
-            newTask.value = ""
-            newTaskIn.value = ""
-        }
-    }
-})
-
 newTask.addEventListener("keyup", (e) => {
     if (e.keyCode === 13 && inputValid(newTask)) {
         saveTask(newTask)
@@ -156,10 +128,8 @@ btnNewDay.addEventListener("click", (e) => {
         if (stateSuccess[key] == 'true') {
             delete stateSuccess[key]
             delete listItems[key]
-            countOfTask--
         }
     }
-    localStorage.setItem('count', JSON.stringify(countOfTask))
     localStorage.setItem("state_success", JSON.stringify(stateSuccess))
     localStorage.setItem('list_items', JSON.stringify(listItems))
     window.location.reload()
@@ -174,35 +144,51 @@ function inputValid(task) {
 
 //функция для записи тасков в базу
 function saveTask(task) {
+    id++
     listItems[id] = task.value
     localStorage.setItem('list_items', JSON.stringify(listItems))
-    addTask(task.value)
+
+    $('.todo_list').append(path(false, task.value, id))
+    localStorage.setItem('id_task', JSON.stringify(id))
+    countToDo.textContent = Object.keys(listItems).length + " tasks to do"
+    checkGauge()
     newTask.value = ""
     newTaskIn.value = ""
 }
 
 
 
-function addTask(taskValue) {
-    countOfTask++
-    localStorage.setItem('count', JSON.stringify(countOfTask))
-    id++
-    $('.todo_list').append(path(false, taskValue, id))
-    localStorage.setItem('id_task', JSON.stringify(id))
+removebtn.addEventListener("click", (e) => {
 
-    countToDo.textContent = countOfTask + " tasks to do"
-    checkGauge()
-}
+    if (e.target.className === 'delete') {
+
+        e.target.parentElement.parentElement.parentElement.removeChild(e.target.parentElement.parentElement)
+
+        delete stateSuccess[e.target.parentElement.id]
+        delete listItems[e.target.parentElement.id]
+        console.log(e.target.parentElement.id)
+        countToDo.textContent = Object.keys(listItems).length + " tasks to do"
+
+        localStorage.setItem("state_success", JSON.stringify(stateSuccess))
+        localStorage.setItem('list_items', JSON.stringify(listItems))
+        checkGauge()
+        if (state.counter == 100) {
+            gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
+            newTask.value = ""
+            newTaskIn.value = ""
+        }
+    }
+})
 
 //функции для расчёта значений кольца
 function checkGauge() {
-    state.counter = Math.round(Object.keys(stateSuccess).length * 100 / countOfTask)
+    state.counter = Math.round(Object.keys(stateSuccess).length * 100 / Object.keys(listItems).length)
     saveState(state)
     setGaugePercent($gauge, state.counter)
     if (state.counter == 100) {
         gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
     }
-    if (countOfTask == 0)
+    if (Object.keys(listItems).length == 0)
         gaugePhotoDisplay('none', 'block', 'none', 'none', 'block')
 }
 
@@ -216,11 +202,7 @@ function checkTask() {
 
         // obj.parentElement.parentElement.children[1].style.display = 'none'
     } else {
-        for (key in stateSuccess) {
-            if (key == obj.parentElement.id) {
-                delete stateSuccess[key]
-            }
-        }
+        delete stateSuccess[obj.parentElement.id]
         obj.parentElement.classList.remove('success')
             //obj.parentElement.parentElement.children[1].style.display = 'block'
     }
