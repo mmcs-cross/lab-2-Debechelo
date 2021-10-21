@@ -66,31 +66,40 @@ function gaugePhotoDisplay(a, b, c, d, e) {
     document.querySelectorAll('.what_is')[0].style.display = e
 }
 
-
 function path(flag, taskValue, key) {
-    var elementTodoList = document.createElement("div", )
-    elementTodoList.className = "element-todo-list"
     var elementOfList = document.createElement("div")
     if (flag)
         elementOfList.className = "success element_of_list"
     else elementOfList.className = "element_of_list"
     elementOfList.id = key
+    var checkboxStyle = document.createElement("label")
+    checkboxStyle.className = "checkbox style1"
     var checkboxTask = document.createElement("input")
-    checkboxTask.className = "checkbox_task"
     checkboxTask.type = "checkbox"
     checkboxTask.onclick = checkTask
     checkboxTask.checked = flag
+    var checkboxCheckmark = document.createElement("div")
+    checkboxCheckmark.className = "checkbox__checkmark"
     var text = document.createElement("div")
     text.className = "textInToDo"
     text.innerText = taskValue
-    var btn = document.createElement("button")
+    var svgElem = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svgElem.setAttributeNS(null, "viewBox", "0 0 " + 12 + " " + 12);
+    var coords = "M7.41401 6L11.707 1.707C12.098 1.316 12.098 0.683998 11.707 0.292998C11.316 -0.0980018 10.684 -0.0980018 10.293 0.292998L6.00001 4.586L1.70701 0.292998C1.31601 -0.0980018 0.684006 -0.0980018 0.293006 0.292998C-0.0979941 0.683998 -0.0979941 1.316 0.293006 1.707L4.58601 6L0.293006 10.293C-0.0979941 10.684 -0.0979941 11.316 0.293006 11.707C0.488006 11.902 0.744006 12 1.00001 12C1.25601 12 1.51201 11.902 1.70701 11.707L6.00001 7.414L10.293 11.707C10.488 11.902 10.744 12 11 12C11.256 12 11.512 11.902 11.707 11.707C12.098 11.316 12.098 10.684 11.707 10.293L7.41401 6Z"
+    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.id = "remove"
+    var btn = document.createElement("div")
     btn.className = "delete"
-    elementOfList.append(text)
-    elementOfList.prepend(checkboxTask)
+    btn.append(svgElem)
+    path.setAttributeNS(null, 'd', coords);
+    path.setAttributeNS(null, 'fill', "#A5A5A5");
+    svgElem.appendChild(path);
+    checkboxStyle.append(checkboxCheckmark)
+    checkboxStyle.append(checkboxTask)
+    checkboxStyle.append(text)
+    elementOfList.append(checkboxStyle)
     elementOfList.append(btn)
-    elementTodoList.append(elementOfList)
-    return elementTodoList
-
+    return elementOfList
 }
 
 newTask.addEventListener("keyup", (e) => {
@@ -147,7 +156,6 @@ function saveTask(task) {
     id++
     listItems[id] = task.value
     localStorage.setItem('list_items', JSON.stringify(listItems))
-
     $('.todo_list').append(path(false, task.value, id))
     localStorage.setItem('id_task', JSON.stringify(id))
     countToDo.textContent = Object.keys(listItems).length + " tasks to do"
@@ -156,19 +164,13 @@ function saveTask(task) {
     newTaskIn.value = ""
 }
 
-
-
 removebtn.addEventListener("click", (e) => {
-
-    if (e.target.className === 'delete') {
-
-        e.target.parentElement.parentElement.parentElement.removeChild(e.target.parentElement.parentElement)
-
+    if (e.target.id === 'remove') {
+        e.target.parentElement.parentElement.parentElement.parentElement.removeChild(e.target.parentElement.parentElement.parentElement)
         delete stateSuccess[e.target.parentElement.id]
         delete listItems[e.target.parentElement.id]
         console.log(e.target.parentElement.id)
         countToDo.textContent = Object.keys(listItems).length + " tasks to do"
-
         localStorage.setItem("state_success", JSON.stringify(stateSuccess))
         localStorage.setItem('list_items', JSON.stringify(listItems))
         checkGauge()

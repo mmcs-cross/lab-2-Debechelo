@@ -23,13 +23,9 @@ body {
 }
 
 .header_todo {
-    font-style: normal;
     font-size: 42px;
     margin-bottom: 36px;
     font-family: 'DM Sans', sans-serif;
-    display: flex;
-    align-items: center;
-    text-align: center;
     letter-spacing: 0.02em;
     color: #424242;
 }
@@ -43,7 +39,7 @@ body {
     width: 431px;
     height: 461px;
     border: 1px solid #E8E8E8;
-    border-radius: 4px;
+    border-radius: 8px;
     display: flex;
     justify-content: start;
     align-items: center;
@@ -54,9 +50,6 @@ body {
 
 .count_task {
     display: none;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
     font-size: 12px;
 }
 
@@ -75,21 +68,20 @@ body {
     margin-right: auto
 }
 
-.text1 {
+.text1,
+.text3 {
     display: flex;
     justify-content: center;
-    font-family: Roboto;
     font-weight: 500;
     font-size: 24px;
 }
 
-.text2 {
+.text2,
+.text4 {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
-    font-family: Roboto;
     font-size: 15px;
-    line-height: 16px;
     color: #A5A5A5;
 }
 
@@ -103,75 +95,61 @@ body {
     margin-right: auto;
 }
 
-.text3 {
-    display: flex;
-    justify-content: center;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 24px;
-}
-
-.text4 {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 15px;
-    line-height: 16px;
-    color: #A5A5A5;
-}
-
 .what_is {
     padding-top: 18px;
     padding-left: 12px;
     display: flex;
-    height: px;
-    width: 450px;
-    border-top: 1px solid #272727;
-    border-color: #E9E9E9;
+    flex-direction: row;
+    height: 47px;
+    width: 431px;
+    border-top: 1px solid #E9E9E9;
 }
 
-.what_is input:focus {
-    color: red;
+.what_is input:focus,
+.what_is input:hover,
+.what_is:focus-within .add_task,
+.what_is:hover .add_task,
+.input_text {
+    color: black;
 }
 
-.what_is:focus-within {
-    color: red;
+input::placeholder {
+    color: #A5A5A5;
+}
+
+::-webkit-input-placeholder {
+    color: transparent;
+}
+
+:hover::-webkit-input-placeholder,
+:focus::-webkit-input-placeholder {
+    color: black;
+}
+
+input:-webkit-autofill:hover {
+    color: black;
 }
 
 .add_task,
 .add_task_in_scroll {
     font-size: 25px;
-    padding-left: 13px;
+    padding-left: 12px;
     border: 0;
     background: 0;
     color: #A5A5A5;
     cursor: pointer;
     outline: none;
-    transition: color 150ms ease-in-out;
-}
-
-.what_is:focus-within .add_task {
-    color: red;
-}
-
-.what_is_in_container:focus-within .add_task_in_scroll {
-    color: red;
 }
 
 .input_text,
 .input_text_in_scroll {
     width: 350px;
     border: 0;
-    padding-top: 2px;
     padding-left: 8px;
     outline: none;
-    transition: border 150ms ease-in-out;
     font-size: 15px;
     color: #A5A5A5;
+    line-height: 16px;
 }
 
 .input_list {
@@ -182,29 +160,24 @@ body {
 .what_is_in_container {
     padding-left: 12px;
     display: flex;
-    width: 450px;
-    border-color: #E9E9E9;
+    width: 431px;
 }
 
-.what_is_in_container input:focus {
-    color: red;
+.what_is_in_container input:focus,
+.what_is_in_container input:hover,
+.what_is_in_container:focus-within .add_task_in_scroll,
+.what_is_in_container:hover .add_task_in_scroll,
+.input_text_in_scroll {
+    color: black;
 }
 
-.what_is_in_container:focus-within {
-    color: red;
-}
-
-.what_is_in_container:focus-within .add_task {
-    color: red;
-}
-
-.element-todo-list {
+.element_of_list {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #252526;
+    color: black;
     background-color: #F1F2F6;
-    border-radius: 5px;
+    border-radius: 8px;
     height: 40px;
     width: 400px;
     font-size: 15px;
@@ -213,33 +186,74 @@ body {
     letter-spacing: 0.02em;
 }
 
-.element_of_list {
+.checkbox.style1 {
     display: flex;
-    align-items: center;
+    cursor: pointer;
 }
 
-.checkbox_task {
-    display: flex;
-    width: 1.5em;
-    height: 1.5em;
-    margin: 8px;
+.checkbox.style1 input {
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox.style1 input:checked~.checkbox__checkmark {
+    background-color: #fff;
+}
+
+.checkbox.style1 input:checked~.checkbox__checkmark:after {
+    opacity: 1;
+}
+
+.checkbox.style1:hover input~.checkbox__checkmark {
+    background-color: #eee;
+}
+
+.checkbox.style1:hover input:checked~.checkbox__checkmark {
+    background-color: #fff;
+}
+
+.checkbox.style1 .checkbox__checkmark {
+    height: 24px;
+    width: 24px;
+    background-color: #fff;
+    border: 2px solid #BBC1DA;
+    transition: background-color 0.25s ease;
+    border-radius: 8px;
+}
+
+.checkbox.style1 .checkbox__checkmark:after {
+    content: "";
+    width: 5px;
+    height: 10px;
+    border: solid #BBC1DA;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.checkbox.style1 {
+    padding-left: 8px;
+    line-height: 1.4;
+    font-size: 16px;
 }
 
 .textInToDo {
     width: 340px;
+    padding-left: 14px;
+    color: black;
 }
 
 .delete {
     width: 12px;
     height: 12px;
-    justify-content: flex-end;
-    background-image: url(/images/Icon.svg);
     margin-right: 14px;
-    border: 0;
-    color: #A5A5A5;
-    cursor: pointer;
-    outline: none;
-    transition: color 150ms ease-in-out;
+}
+
+#remove:hover {
+    fill: black;
 }
 
 .element_of_list:focus-within .delete {
@@ -248,20 +262,6 @@ body {
 
 .delete input:focus {
     color: #252526;
-}
-
-.element-todo-list i {
-    margin: 8px;
-    color: #A5A5A5;
-    font-size: 16px;
-}
-
-.element-todo-list i:hover {
-    color: #B40404;
-}
-
-.element-todo-list i:active {
-    color: #B40404;
 }
 
 .success {
@@ -293,15 +293,16 @@ body {
     margin-top: 8px;
     margin-left: 6px;
     margin-right: 8px;
-    font-family: Roboto;
     font-style: normal;
     font-weight: 500;
     font-size: 13px;
 }
 
-.fa-calendar-day {
-    margin-top: 8px;
-    margin-bottom: 8px;
+.icon_new_day {
+    width: 16px;
+    height: 16px;
+    margin-bottom: 7px;
+    margin-top: 7px;
     margin-left: 8px;
 }
 
