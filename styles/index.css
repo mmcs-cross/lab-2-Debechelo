@@ -41,7 +41,6 @@ body {
     border: 1px solid #E8E8E8;
     border-radius: 8px;
     display: flex;
-    justify-content: start;
     align-items: center;
     flex-direction: column;
     background-color: #FFFFFF;
@@ -58,7 +57,6 @@ body {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-    align-self: start;
 }
 
 .image_day {
@@ -180,41 +178,40 @@ input:-webkit-autofill:hover {
     border-radius: 8px;
     height: 40px;
     width: 400px;
-    font-size: 15px;
     margin-bottom: 8px;
     margin-left: 16px;
-    letter-spacing: 0.02em;
 }
 
-.checkbox.style1 {
+.checkboxStyle {
     display: flex;
     cursor: pointer;
+    padding-left: 8px;
 }
 
-.checkbox.style1 input {
+.checkboxStyle input {
     opacity: 0;
     cursor: pointer;
     height: 0;
     width: 0;
 }
 
-.checkbox.style1 input:checked~.checkbox__checkmark {
+.checkboxStyle input:checked~.checkbox__checkmark {
     background-color: #fff;
 }
 
-.checkbox.style1 input:checked~.checkbox__checkmark:after {
+.checkboxStyle input:checked~.checkbox__checkmark:after {
     opacity: 1;
 }
 
-.checkbox.style1:hover input~.checkbox__checkmark {
+.checkboxStyle:hover input~.checkbox__checkmark {
     background-color: #eee;
 }
 
-.checkbox.style1:hover input:checked~.checkbox__checkmark {
+.checkboxStyle:hover input:checked~.checkbox__checkmark {
     background-color: #fff;
 }
 
-.checkbox.style1 .checkbox__checkmark {
+.checkboxStyle .checkbox__checkmark {
     height: 24px;
     width: 24px;
     background-color: #fff;
@@ -223,7 +220,7 @@ input:-webkit-autofill:hover {
     border-radius: 8px;
 }
 
-.checkbox.style1 .checkbox__checkmark:after {
+.checkboxStyle .checkbox__checkmark:after {
     content: "";
     width: 5px;
     height: 10px;
@@ -231,25 +228,22 @@ input:-webkit-autofill:hover {
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
     opacity: 0;
-    transition: opacity 0.25s ease;
-}
-
-.checkbox.style1 {
-    padding-left: 8px;
-    line-height: 1.4;
-    font-size: 16px;
 }
 
 .textInToDo {
-    width: 340px;
+    width: 341px;
     padding-left: 14px;
-    color: black;
+    align-items: flex-start;
+    letter-spacing: 0.02em;
+    font-size: 15px;
 }
 
 .delete {
+    align-items: flex-end;
     width: 12px;
     height: 12px;
     margin-right: 14px;
+    cursor: pointer;
 }
 
 #remove:hover {
@@ -257,16 +251,16 @@ input:-webkit-autofill:hover {
 }
 
 .element_of_list:focus-within .delete {
-    color: #252526;
+    color: black;
 }
 
 .delete input:focus {
-    color: #252526;
+    color: black;
 }
 
 .success {
-    color: #A5A5A5;
     text-decoration: line-through;
+    color: #A5A5A5;
 }
 
 .new_day_button {
@@ -294,6 +288,7 @@ input:-webkit-autofill:hover {
     margin-left: 6px;
     margin-right: 8px;
     font-style: normal;
+    cursor: pointer;
     font-weight: 500;
     font-size: 13px;
 }

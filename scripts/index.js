@@ -73,9 +73,10 @@ function path(flag, taskValue, key) {
     else elementOfList.className = "element_of_list"
     elementOfList.id = key
     var checkboxStyle = document.createElement("label")
-    checkboxStyle.className = "checkbox style1"
+    checkboxStyle.className = "checkboxStyle"
     var checkboxTask = document.createElement("input")
     checkboxTask.type = "checkbox"
+    checkboxTask.className = "check"
     checkboxTask.onclick = checkTask
     checkboxTask.checked = flag
     var checkboxCheckmark = document.createElement("div")
@@ -96,8 +97,8 @@ function path(flag, taskValue, key) {
     svgElem.appendChild(path);
     checkboxStyle.append(checkboxCheckmark)
     checkboxStyle.append(checkboxTask)
-    checkboxStyle.append(text)
     elementOfList.append(checkboxStyle)
+    elementOfList.append(text)
     elementOfList.append(btn)
     return elementOfList
 }
@@ -142,7 +143,7 @@ btnNewDay.addEventListener("click", (e) => {
     localStorage.setItem("state_success", JSON.stringify(stateSuccess))
     localStorage.setItem('list_items', JSON.stringify(listItems))
     window.location.reload()
-        //localStorage.clear()
+    localStorage.clear()
 })
 
 
@@ -198,14 +199,14 @@ function checkGauge() {
 
 function checkTask() {
     obj = this
-    if (!obj.parentElement.classList.contains('success')) {
-        obj.parentElement.classList.add('success')
+    if (!obj.parentElement.parentElement.classList.contains('success')) {
+        obj.parentElement.parentElement.classList.add('success')
         stateSuccess[obj.parentElement.id] = "true"
 
         // obj.parentElement.parentElement.children[1].style.display = 'none'
     } else {
         delete stateSuccess[obj.parentElement.id]
-        obj.parentElement.classList.remove('success')
+        obj.parentElement.parentElement.classList.remove('success')
             //obj.parentElement.parentElement.children[1].style.display = 'block'
     }
     localStorage.setItem("state_success", JSON.stringify(stateSuccess))
