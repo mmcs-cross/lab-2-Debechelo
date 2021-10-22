@@ -5,39 +5,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const returnObj = JSON.parse(localStorage.getItem('list_items'))
     const returnState = localStorage.getItem('state_success') ? JSON.parse(localStorage.getItem('state_success')) : {}
-
     let elementOfList
 
+    window.localStorage.removeItem("state_marked");
     if (Object.keys(returnObj).length !== 0) {
         for (key in returnObj) {
-            if (returnState[key] == 'true') {
-                elementOfList = path(true, returnObj[key], key)
-            } else {
-                elementOfList = path(false, returnObj[key], key)
-            }
+            elementOfList = path(returnState[key], returnObj[key], key)
             $('.todo_list').append(elementOfList)
         }
         gaugePhotoDisplay('block', 'none', 'none', 'block', 'none')
     } else {
         gaugePhotoDisplay('none', 'block', 'none', 'none', 'block')
     }
-
-
     const $gauge = document.querySelector('.gauge')
     setGaugePercent($gauge, state.counter)
-
-
-
     if (state.counter == 100) {
         gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
     }
     document.getElementsByClassName('count_task')[0].style.display = 'block'
     countToDo.textContent = Object.keys(returnObj).length + " tasks to do"
-
     newTask.value = ""
     newTaskIn.value = ""
     checkGauge();
-
 })
 
 const state = getStoredStateOrDefault({
@@ -48,7 +37,7 @@ var newTask = document.querySelector('.input_text')
 var addTaskbtn = document.querySelector('.add_task')
 var newTaskIn = document.querySelector('.input_text_in_scroll')
 var addTaskbtnIn = document.querySelector('.add_task_in_scroll')
-var element = document.querySelector('.todo_list')
+var elementMarked = document.querySelector('.todo_list')
 var removebtn = document.querySelector('.todo_list')
 const $gauge = document.querySelector('.gauge')
 const btnNewDay = document.querySelector('.new_day_button')
@@ -83,9 +72,15 @@ function path(flag, taskValue, key) {
     text.innerText = taskValue
     var svgElem = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svgElem.setAttributeNS(null, "viewBox", "0 0 " + 12 + " " + 12);
-    var coords = "M7.41401 6L11.707 1.707C12.098 1.316 12.098 0.683998 11.707 0.292998C11.316 -0.0980018 10.684 -0.0980018 10.293 0.292998L6.00001 4.586L1.70701 0.292998C1.31601 -0.0980018 0.684006 -0.0980018 0.293006 0.292998C-0.0979941 0.683998 -0.0979941 1.316 0.293006 1.707L4.58601 6L0.293006 10.293C-0.0979941 10.684 -0.0979941 11.316 0.293006 11.707C0.488006 11.902 0.744006 12 1.00001 12C1.25601 12 1.51201 11.902 1.70701 11.707L6.00001 7.414L10.293 11.707C10.488 11.902 10.744 12 11 12C11.256 12 11.512 11.902 11.707 11.707C12.098 11.316 12.098 10.684 11.707 10.293L7.41401 6Z"
+    var coords = "M7.41401 6L11.707 1.707C12.098 1.316 12.098 0.683998 11.707 0.292998C11.316 -0.0980018 10.684 "
+    coords += "-0.0980018 10.293 0.292998L6.00001 4.586L1.70701 0.292998C1.31601 -0.0980018 0.684006 -0.0980018 "
+    coords += "0.293006 0.292998C-0.0979941 0.683998 -0.0979941 1.316 0.293006 1.707L4.58601 6L0.293006 10.293C-0.0979941 "
+    coords += "10.684 -0.0979941 11.316 0.293006 11.707C0.488006 11.902 0.744006 12 1.00001 12C1.25601 12 1.51201 11.902 "
+    coords += "1.70701 11.707L6.00001 7.414L10.293 11.707C10.488 11.902 10.744 12 11 12C11.256 12 11.512 11.902 11.707 "
+    coords += "11.707C12.098 11.316 12.098 10.684 11.707 10.293L7.41401 6Z"
     var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.id = "remove"
+    svgElem.id = "remove"
+    path.id = "path"
     var btn = document.createElement("div")
     btn.className = "delete"
     btn.append(svgElem)
@@ -98,6 +93,7 @@ function path(flag, taskValue, key) {
     return elementOfList
 }
 
+//добавленние в список дел
 newTask.addEventListener("keyup", (e) => {
     if (e.keyCode === 13 && inputValid(newTask)) {
         saveTask(newTask)
@@ -127,24 +123,45 @@ addTaskbtnIn.addEventListener("click", (e) => {
     }
 })
 
-
-btnNewDay.addEventListener("click", (e) => {
-    for (key in stateSuccess) {
-        if (stateSuccess[key] == 'true') {
-            delete stateSuccess[key]
-            delete listItems[key]
-        }
-    }
-    localStorage.setItem("state_success", JSON.stringify(stateSuccess))
-    localStorage.setItem('list_items', JSON.stringify(listItems))
-    window.location.reload()
-    localStorage.clear()
-})
-
-
 function inputValid(task) {
     return (task.value !== "") && (task.value !== " ")
 
+}
+
+//новый день
+btnNewDay.addEventListener("click", (e) => {
+    for (key in listItems) {
+        if (stateMarked[key] != true) {
+            delete listItems[key]
+            delete stateSuccess[key]
+        }
+    }
+    window.localStorage.removeItem("state_marked");
+    localStorage.setItem('list_items', JSON.stringify(listItems))
+    localStorage.setItem("state_success", JSON.stringify(stateSuccess))
+    window.location.reload()
+        //localStorage.clear()
+})
+
+//маркеровка
+elementMarked.addEventListener("click", (e) => {
+    if (e.target.classList.contains('element_of_list')) {
+        Marked(e.target)
+    }
+    if (e.target.classList.contains('textInToDo')) {
+        Marked(e.target.parentElement)
+    }
+})
+
+function Marked(Elements) {
+    if (!Elements.classList.contains('marked')) {
+        Elements.classList.add('marked')
+        stateMarked[Elements.id] = true
+        localStorage.setItem("state_marked", JSON.stringify(stateMarked))
+    } else {
+        delete stateMarked[Elements.id]
+        Elements.classList.remove('marked')
+    }
 }
 
 //функция для записи тасков в базу
@@ -156,54 +173,34 @@ function saveTask(task) {
     localStorage.setItem('id_task', JSON.stringify(id))
     countToDo.textContent = Object.keys(listItems).length + " tasks to do"
     checkGauge()
-    newTask.value = ""
     newTaskIn.value = ""
+    newTask.value = ""
 }
 
+//удаление элемента списка
 removebtn.addEventListener("click", (e) => {
+    console.log(e.target)
     if (e.target.id === 'remove') {
-        e.target.parentElement.parentElement.parentElement.parentElement.removeChild(e.target.parentElement.parentElement.parentElement)
-        delete stateSuccess[e.target.parentElement.id]
-        delete listItems[e.target.parentElement.id]
-        countToDo.textContent = Object.keys(listItems).length + " tasks to do"
-        localStorage.setItem("state_success", JSON.stringify(stateSuccess))
-        localStorage.setItem('list_items', JSON.stringify(listItems))
-        checkGauge()
-        if (state.counter == 100) {
-            gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
-            newTask.value = ""
-            newTaskIn.value = ""
-        }
+        remove(e.target)
+    }
+    if (e.target.id === 'path') {
+        remove(e.target.parentElement)
+    }
+    if (Object.keys(listItems).length == 0) {
+        localStorage.clear()
+        window.location.reload()
     }
 })
 
-element.addEventListener("click", (e) => {
-
-    if (e.target.classList.contains('element_of_list')) {
-        console.log(e.target)
-        if (!e.target.classList.contains('marked')) {
-            e.target.classList.add('marked')
-            stateMarked[e.target.id] = "true"
-            localStorage.setItem("state_marked", JSON.stringify(stateMarked))
-        } else {
-            delete stateMarked[e.target.id]
-            e.target.classList.remove('marked')
-        }
-
-    }
-    if (e.target.classList.contains('textInToDo')) {
-        console.log(e.target)
-        if (!e.target.parentElement.classList.contains('marked')) {
-            e.target.parentElement.classList.add('marked')
-            stateMarked[e.target.id] = "true"
-            localStorage.setItem("state_marked", JSON.stringify(stateMarked))
-        } else {
-            delete stateMarked[e.target.id]
-            e.target.parentElement.classList.remove('marked')
-        }
-
-    }
-})
+function remove(Element) {
+    Element.parentElement.parentElement.parentElement.removeChild(Element.parentElement.parentElement)
+    delete stateSuccess[Element.parentElement.parentElement.id]
+    delete listItems[Element.parentElement.parentElement.id]
+    countToDo.textContent = Object.keys(listItems).length + " tasks to do"
+    localStorage.setItem("state_success", JSON.stringify(stateSuccess))
+    localStorage.setItem('list_items', JSON.stringify(listItems))
+    checkGauge()
+}
 
 //функции для расчёта значений кольца
 function checkGauge() {
@@ -212,31 +209,26 @@ function checkGauge() {
     setGaugePercent($gauge, state.counter)
     if (state.counter == 100) {
         gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
+        newTask.value = ""
+        newTaskIn.value = ""
     }
-    if (Object.keys(listItems).length == 0)
+    if (Object.keys(listItems).length == 0) {
         gaugePhotoDisplay('none', 'block', 'none', 'none', 'block')
+        newTask.value = ""
+        newTaskIn.value = ""
+    }
 }
-
-
 
 function checkTask() {
     obj = this
-    if (!obj.parentElement.parentElement.classList.contains('success')) {
-        obj.parentElement.parentElement.classList.add('success')
-        stateSuccess[obj.parentElement.id] = "true"
-
-        // obj.parentElement.parentElement.children[1].style.display = 'none'
+    if (!obj.parentElement.classList.contains('success')) {
+        obj.parentElement.classList.add('success')
+        stateSuccess[obj.parentElement.id] = true
     } else {
         delete stateSuccess[obj.parentElement.id]
-        obj.parentElement.parentElement.classList.remove('success')
-            //obj.parentElement.parentElement.children[1].style.display = 'block'
+        obj.parentElement.classList.remove('success')
     }
     localStorage.setItem("state_success", JSON.stringify(stateSuccess))
     gaugePhotoDisplay('block', 'none', 'none', 'block', 'none')
     checkGauge()
-    if (state.counter == 100) {
-        gaugePhotoDisplay('none', 'none', 'block', 'none', 'block')
-        newTask.value = ""
-        newTaskIn.value = ""
-    }
 }

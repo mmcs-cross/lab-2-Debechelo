@@ -1,0 +1,90 @@
+.element_of_list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: black;
+    background-color: #F1F2F6;
+    border-radius: 8px;
+    min-height: 40px;
+    width: 400px;
+    margin-bottom: 8px;
+    margin-left: 16px;
+    padding-left: 8px;
+    padding-right: 14px;
+    cursor: pointer;
+    word-wrap: break-word;
+}
+
+.element_of_list:hover .delete {
+    opacity: 1;
+}
+
+.marked {
+    border: 3px solid #364FFB;
+    padding-left: 5px;
+    padding-right: 11px;
+}
+
+.checkbox_task {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-left: 8px;
+    border-radius: 8px;
+    border: 2px solid #BBC1DA;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox_task:hover::before {
+    content: url("/images/V2.svg");
+    fill: #A5A5A5;
+    opacity: 1;
+    transition: .1s ease-in;
+}
+
+.checkbox_task:checked:hover::before {
+    content: url("/images/V.svg");
+}
+
+.checkbox_task::before {
+    content: url("/images/V.svg");
+    font-size: 18px;
+    position: absolute;
+    right: 50%;
+    bottom: 50%;
+    transform: translate(50%, 50%);
+    opacity: 0;
+}
+
+.checkbox_task:checked::before {
+    opacity: 1;
+    transition: .1s ease-in;
+}
+
+.textInToDo {
+    width: 341px;
+    padding-left: 14px;
+    align-items: flex-start;
+    letter-spacing: 0.02em;
+    font-size: 15px;
+}
+
+.delete {
+    align-items: flex-end;
+    width: 12px;
+    height: 16px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.delete:hover #path {
+    fill: black;
+}
+
+.success {
+    text-decoration: line-through;
+    color: #A5A5A5;
+}
