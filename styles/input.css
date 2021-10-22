@@ -1,0 +1,77 @@
+.what_is {
+    padding-top: 18px;
+    padding-left: 12px;
+    display: flex;
+    align-items: center;
+    height: 47px;
+    width: 431px;
+    border-top: 1px solid #E9E9E9;
+}
+
+.what_is input:focus,
+.what_is input:hover,
+.what_is:focus-within .add_task,
+.what_is:hover .add_task,
+.input_text {
+    color: black;
+}
+
+input::placeholder {
+    color: #A5A5A5;
+}
+
+::-webkit-input-placeholder {
+    color: transparent;
+}
+
+:hover::-webkit-input-placeholder,
+:focus::-webkit-input-placeholder {
+    color: black;
+}
+
+input:-webkit-autofill:hover {
+    color: black;
+}
+
+.add_task,
+.add_task_in_scroll {
+    font-size: 25px;
+    padding-left: 14px;
+    border: 0;
+    background: 0;
+    color: #A5A5A5;
+    cursor: pointer;
+    outline: none;
+}
+
+.input_text,
+.input_text_in_scroll {
+    width: 350px;
+    border: 0;
+    padding-left: 8px;
+    outline: none;
+    font-size: 15px;
+    color: #A5A5A5;
+    line-height: 16px;
+}
+
+.input_list {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.what_is_in_container {
+    margin-left: 16px;
+    margin-right: 3px;
+    display: flex;
+    align-items: center;
+    width: 400px;
+}
+
+.what_is_in_container input:focus,
+.what_is_in_container input:hover,
+.what_is_in_container:focus-within .add_task_in_scroll,
+.what_is_in_container:hover .add_task_in_scroll,
+.input_text_in_scroll {
+    color: black;
+}
