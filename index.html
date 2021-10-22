@@ -6,6 +6,7 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="styles/fonts.css">
     <link rel="stylesheet" type="text/css" href="styles/gauge.css">
+    <link rel="stylesheet" type="text/css" href="styles/check.css">
     <link rel="stylesheet" type="text/css" href="styles/index.css">
 </head>
 
@@ -16,6 +17,7 @@
     <div class="container">
         <div class="gauge">
             <div class="gauge__average">
+
                 <svg viewBox="0 0 120 120" class="gauge__cirlce" fill="none" stroke-width="2">
             <circle class="gauge__cirlce-base" r="53" cx="60" cy="60"></circle>
             <circle
@@ -25,7 +27,10 @@
               stroke-dashoffset="0"
               stroke-dasharray="1 329"></circle>
           </svg>
-                <div class="gauge__percent">0</div>
+                <div class="gauge_container">
+                    <div class="gauge__percent">0</div>
+                    <div class="percent">%</div>
+                </div>
             </div>
         </div>
 
@@ -73,6 +78,7 @@
 </body>
 
 </html>
+
 
 
 <!--<div class="element-todo-list">

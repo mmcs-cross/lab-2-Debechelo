@@ -26,15 +26,29 @@
     transition: stroke-dasharray 0.5s;
 }
 
+.gauge_container {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 8px;
+}
+
 .gauge__percent {
     color: #000000;
     font-size: 24px;
-    align-items: center;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
+}
+
+.percent {
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 900;
+    height: 16px;
+    width: 11px;
+    color: #999999;
 }

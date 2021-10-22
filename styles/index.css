@@ -180,54 +180,55 @@ input:-webkit-autofill:hover {
     width: 400px;
     margin-bottom: 8px;
     margin-left: 16px;
-}
-
-.checkboxStyle {
-    display: flex;
-    cursor: pointer;
     padding-left: 8px;
-}
-
-.checkboxStyle input {
-    opacity: 0;
+    padding-right: 14px;
     cursor: pointer;
-    height: 0;
-    width: 0;
 }
 
-.checkboxStyle input:checked~.checkbox__checkmark {
-    background-color: #fff;
+.marked {
+    border: 3px solid #364FFB;
+    padding-left: 5px;
+    padding-right: 11px;
 }
 
-.checkboxStyle input:checked~.checkbox__checkmark:after {
-    opacity: 1;
-}
-
-.checkboxStyle:hover input~.checkbox__checkmark {
-    background-color: #eee;
-}
-
-.checkboxStyle:hover input:checked~.checkbox__checkmark {
-    background-color: #fff;
-}
-
-.checkboxStyle .checkbox__checkmark {
-    height: 24px;
-    width: 24px;
-    background-color: #fff;
-    border: 2px solid #BBC1DA;
-    transition: background-color 0.25s ease;
+.checkbox_task {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-left: 8px;
     border-radius: 8px;
+    ;
+    border: 2px solid #BBC1DA;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    position: relative;
 }
 
-.checkboxStyle .checkbox__checkmark:after {
-    content: "";
-    width: 5px;
-    height: 10px;
-    border: solid #BBC1DA;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
+.checkbox_task:hover::before {
+    content: url("/images/V2.svg");
+    fill: #A5A5A5;
+    opacity: 1;
+    transition: .1s ease-in;
+}
+
+.checkbox_task:checked:hover::before {
+    content: url("/images/V.svg");
+}
+
+.checkbox_task::before {
+    content: url("/images/V.svg");
+    font-size: 18px;
+    position: absolute;
+    right: 50%;
+    bottom: 50%;
+    transform: translate(50%, 50%);
     opacity: 0;
+}
+
+.checkbox_task:checked::before {
+    opacity: 1;
+    transition: .1s ease-in;
 }
 
 .textInToDo {
@@ -242,7 +243,6 @@ input:-webkit-autofill:hover {
     align-items: flex-end;
     width: 12px;
     height: 12px;
-    margin-right: 14px;
     cursor: pointer;
 }
 

@@ -48,6 +48,7 @@ var newTask = document.querySelector('.input_text')
 var addTaskbtn = document.querySelector('.add_task')
 var newTaskIn = document.querySelector('.input_text_in_scroll')
 var addTaskbtnIn = document.querySelector('.add_task_in_scroll')
+var element = document.querySelector('.todo_list')
 var removebtn = document.querySelector('.todo_list')
 const $gauge = document.querySelector('.gauge')
 const btnNewDay = document.querySelector('.new_day_button')
@@ -56,7 +57,7 @@ let countToDo = document.querySelector('.count_task') // переменная д
 let listItems = localStorage.getItem('list_items') ? JSON.parse(localStorage.getItem('list_items')) : {} // таски в базе
 let id = localStorage.getItem('id_task') ? JSON.parse(localStorage.getItem('id_task')) : 0
 let stateSuccess = localStorage.getItem('state_success') ? JSON.parse(localStorage.getItem('state_success')) : {}
-
+let stateMarked = localStorage.getItem('state_marked') ? JSON.parse(localStorage.getItem('state_marked')) : {}
 
 function gaugePhotoDisplay(a, b, c, d, e) {
     document.querySelectorAll('.gauge')[0].style.display = a
@@ -72,15 +73,11 @@ function path(flag, taskValue, key) {
         elementOfList.className = "success element_of_list"
     else elementOfList.className = "element_of_list"
     elementOfList.id = key
-    var checkboxStyle = document.createElement("label")
-    checkboxStyle.className = "checkboxStyle"
     var checkboxTask = document.createElement("input")
+    checkboxTask.className = "checkbox_task"
     checkboxTask.type = "checkbox"
-    checkboxTask.className = "check"
     checkboxTask.onclick = checkTask
     checkboxTask.checked = flag
-    var checkboxCheckmark = document.createElement("div")
-    checkboxCheckmark.className = "checkbox__checkmark"
     var text = document.createElement("div")
     text.className = "textInToDo"
     text.innerText = taskValue
@@ -95,9 +92,7 @@ function path(flag, taskValue, key) {
     path.setAttributeNS(null, 'd', coords);
     path.setAttributeNS(null, 'fill', "#A5A5A5");
     svgElem.appendChild(path);
-    checkboxStyle.append(checkboxCheckmark)
-    checkboxStyle.append(checkboxTask)
-    elementOfList.append(checkboxStyle)
+    elementOfList.append(checkboxTask)
     elementOfList.append(text)
     elementOfList.append(btn)
     return elementOfList
@@ -170,7 +165,6 @@ removebtn.addEventListener("click", (e) => {
         e.target.parentElement.parentElement.parentElement.parentElement.removeChild(e.target.parentElement.parentElement.parentElement)
         delete stateSuccess[e.target.parentElement.id]
         delete listItems[e.target.parentElement.id]
-        console.log(e.target.parentElement.id)
         countToDo.textContent = Object.keys(listItems).length + " tasks to do"
         localStorage.setItem("state_success", JSON.stringify(stateSuccess))
         localStorage.setItem('list_items', JSON.stringify(listItems))
@@ -180,6 +174,34 @@ removebtn.addEventListener("click", (e) => {
             newTask.value = ""
             newTaskIn.value = ""
         }
+    }
+})
+
+element.addEventListener("click", (e) => {
+
+    if (e.target.classList.contains('element_of_list')) {
+        console.log(e.target)
+        if (!e.target.classList.contains('marked')) {
+            e.target.classList.add('marked')
+            stateMarked[e.target.id] = "true"
+            localStorage.setItem("state_marked", JSON.stringify(stateMarked))
+        } else {
+            delete stateMarked[e.target.id]
+            e.target.classList.remove('marked')
+        }
+
+    }
+    if (e.target.classList.contains('textInToDo')) {
+        console.log(e.target)
+        if (!e.target.parentElement.classList.contains('marked')) {
+            e.target.parentElement.classList.add('marked')
+            stateMarked[e.target.id] = "true"
+            localStorage.setItem("state_marked", JSON.stringify(stateMarked))
+        } else {
+            delete stateMarked[e.target.id]
+            e.target.parentElement.classList.remove('marked')
+        }
+
     }
 })
 
