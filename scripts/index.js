@@ -173,8 +173,8 @@ function saveTask(task) {
     localStorage.setItem('id_task', JSON.stringify(id))
     countToDo.textContent = Object.keys(listItems).length + " tasks to do"
     checkGauge()
-    newTask.value = ""
     newTaskIn.value = ""
+    newTask.value = ""
 }
 
 //удаление элемента списка
